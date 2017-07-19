@@ -1,103 +1,76 @@
 extends Node
 
-var heyzap = null
 var publisher_id = "YOUR HEYZAP PUBLISHER ID"
 
 func _ready():
-	if(Globals.has_singleton("Heyzap")):
-		heyzap = Globals.get_singleton("Heyzap")
-		heyzap.init(get_instance_ID(), publisher_id)
+	if Heyzap:
+		Heyzap.connect('initialized', self, '_on_initialized', [], CONNECT_ONESHOT)
+		Heyzap.connect('network_event', self, '_on_network_event')
+		Heyzap.init(publisher_id)
 
+func _on_initialized():
+	print('heyzap initialized')
+	Heyzap.connect('ad_shown', self, '_on_ad_shown')
+	Heyzap.connect('ad_hidden', self, '_on_ad_hidden')
+	Heyzap.connect('ad_ready', self, '_on_ad_ready')
+	Heyzap.connect('ad_clicked', self, '_on_ad_clicked')
+	Heyzap.connect('ad_skipped', self, '_on_ad_skipped')
+	Heyzap.connect('ad_finished', self, '_on_ad_finished')
+	Heyzap.connect('ad_failed', self, '_on_ad_failed')
 
-#callbacks
-func _on_network_callback(network, event):
+func _on_network_event(network, event):
 	print(network + " - " + event)
 
-func _on_banner_loaded():
-	print("_on_banner_loaded")
-	
-func _on_banner_error():
-	print("_on_banner_error")
-	
-func _on_interstitial_hide():
-	print("_on_interstitial_hide")
-	
-func _on_interstitial_available():
-	print("_on_interstitial_available")
+func _on_ad_shown(type, tag):
+	print("ad shown ", type, tag)
 
-func _on_insterstitial_failed_to_fetch():
-	print("_on_insterstitial_failed_to_fetch")
-	
-func _on_video_hide():
-	print("_on_video_hide")
-	
-func _on_video_available():
-	print("_on_video_available")
-	
-func _on_video_failed_to_fetch():
-	print("_on_video_failed_to_fetch")
-	
-func _on_incentivized_hide():
-	print("_on_incentivized_hide")
-	
-func _on_incentivized_available():
-	print("_on_incentivized_available")
-	
-func _on_incentivized_failed_to_fetch():
-	print("_on_incentivized_failed_to_fetch")
-	
-func _on_incentivized_complete():
-	print("_on_incentivized_complete")
-	
-func _on_incentivized_incomplete():
-	print("_on_incentivized_incomplete")
+func _on_ad_hidden(type, tag):
+	print("ad hidden ", type, tag)
 
-#######
+func _on_ad_ready(type, tag):
+	print("ad ready ", type, tag)
+
+func _on_ad_clicked(type, tag):
+	print("ad clicked ", type, tag)
+
+func _on_ad_skipped(type, tag):
+	print("ad skipped ", type, tag)
+
+func _on_ad_finished(type, tag):
+	print("ad finished ", type, tag)
+
+func _on_ad_failed(type, msg, tag):
+	print('error: ', msg, type, tag)
 
 func _on_button_pressed():
-	if heyzap:
-		heyzap.startTestActivity();
-
+	if Heyzap: Heyzap.start_test_activity();
 
 func _on_button1_pressed():
-	if heyzap:
-		heyzap.loadBanner(false);
-
+	if Heyzap: Heyzap.show_banner(false);
 
 func _on_button2_pressed():
-	if heyzap:
-		heyzap.showBanner();
-
+	if Heyzap: Heyzap.show_banner(true);
 
 func _on_button3_pressed():
-	if heyzap:
-		heyzap.hideBanner();
-
+	if Heyzap: Heyzap.hide_banner();
 
 func _on_button4_pressed():
-	if heyzap:
-		heyzap.displayInterstitial();
-
+	if Heyzap: Heyzap.show_interstitial();
 
 func _on_button5_pressed():
-	if heyzap:
-		if heyzap.isVideoAdAvailable():
-			heyzap.displayVideoAd()
-			heyzap.fetchVideoAd()
-
+	if Heyzap: Heyzap.show_video()
 
 func _on_button6_pressed():
-	if heyzap:
-		if heyzap.isIncentivizedAdAvailable():
-			heyzap.displayIncentivizedAd()
-			heyzap.fetchIncentivizedAd()
-
+	if Heyzap: Heyzap.show_reward_video()
 
 func _on_button7_pressed():
-	if heyzap:
-		heyzap.fetchVideoAd();
-
+	if Heyzap: Heyzap.fetch_ad(Heyzap.AD_TYPE_VIDEO);
 
 func _on_button8_pressed():
-	if heyzap:
-		heyzap.fetchIncentivizedAd();
+	if Heyzap: Heyzap.fetch_ad(Heyzap.AD_TYPE_REWARD_VIDEO);
+
+func _on_button9_pressed():
+	if Heyzap:
+		print(Heyzap.is_ad_ready(Heyzap.AD_TYPE_INTERSTITIAL))
+		print(Heyzap.is_ad_ready(Heyzap.AD_TYPE_VIDEO))
+		print(Heyzap.is_ad_ready(Heyzap.AD_TYPE_REWARD_VIDEO))

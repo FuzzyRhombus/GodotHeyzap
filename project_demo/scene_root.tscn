@@ -35,7 +35,7 @@ margin/bottom = 284.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-text = "LOAD BANNER"
+text = "SHOW BANNER"
 flat = false
 
 [node name="button2" type="Button" parent="."]
@@ -51,7 +51,7 @@ margin/bottom = 373.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-text = "SHOW BANNER"
+text = "SHOW BANNER TOP"
 flat = false
 
 [node name="button3" type="Button" parent="."]
@@ -150,6 +150,22 @@ shortcut = null
 text = "DISPLAY  INCENTIVIZED VIDEO AD"
 flat = false
 
+[node name="button9" type="Button" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 160.0
+margin/top = 892.0
+margin/right = 527.0
+margin/bottom = 941.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "CHECK ADS READY"
+flat = false
+
 [connection signal="pressed" from="button" to="." method="_on_button_pressed"]
 
 [connection signal="pressed" from="button1" to="." method="_on_button1_pressed"]
@@ -167,5 +183,7 @@ flat = false
 [connection signal="pressed" from="button5" to="." method="_on_button5_pressed"]
 
 [connection signal="pressed" from="button6" to="." method="_on_button6_pressed"]
+
+[connection signal="pressed" from="button9" to="." method="_on_button9_pressed"]
 
 
