@@ -73,8 +73,7 @@ func _on_initialized():
     emit_signal('initialized')
 
 func _on_network_event(network, event):
-    pass
-    # emit_signal('network_event', network, event)
+    emit_signal('network_event', network, event)
 
 func _on_ad_show(type, tag):
     emit_signal('ad_shown', type, tag)
