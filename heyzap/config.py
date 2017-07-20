@@ -1,5 +1,5 @@
 def can_build(plat):
-	return plat=="android"
+	return plat == 'android' or plat == 'iphone'
 
 def configure(env):
 	if (env['platform'] == 'android'):
@@ -13,3 +13,7 @@ def configure(env):
 		env.android_add_dependency("compile(name:'AudienceNetwork-4.20.0', ext:'aar')")
 		env.android_add_dependency("compile(name:'unity-ads-2.0.5', ext:'aar')")
 		#env.android_add_flat_dir_repository("../../../modules/heyzap/android/libs")
+	elif env['platform'] == 'iphone':
+		env.Append(FRAMEWORKPATH=['modules/heyzap/ios/lib'])
+		# link any additional mediated frameworks below (e.g. -framework UnityAds)
+		env.Append(LINKFLAGS=['-ObjC', '-framework', 'AdSupport', '-framework', 'CoreTelephony', '-framework', 'CoreVideo', '-framework', 'MediaPlayer', '-framework', 'MessageUI', '-framework', 'MobileCoreServices', '-framework', 'HeyzapAds',  '-lsqlite3', '-lxml2'])
