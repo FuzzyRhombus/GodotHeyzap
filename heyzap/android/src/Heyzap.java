@@ -164,7 +164,7 @@ public class Heyzap extends Godot.SingletonBase {
 		});
     }
 
-    public void startTestActivity() {
+    public void start_test() {
         if (isDebug) HeyzapAds.startTestActivity(activity);
     }
 
@@ -378,7 +378,7 @@ public class Heyzap extends Godot.SingletonBase {
         isDebug = (activity.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
         registerClass("GodotHeyzap", new String[]{
             "init",
-            "startTestActivity",
+            "start_test",
             "show_banner",
             "hide_banner",
             "is_ad_ready",

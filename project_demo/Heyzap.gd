@@ -23,8 +23,8 @@ signal network_event(network, event)
 func init(publisher_id):
     if GodotHeyzap: GodotHeyzap.init(get_instance_ID(), publisher_id)
 
-func start_test_activity():
-    if GodotHeyzap: GodotHeyzap.startTestActivity()
+func start_test():
+    if GodotHeyzap: GodotHeyzap.start_test()
 
 func is_initialized():
     return initialized
