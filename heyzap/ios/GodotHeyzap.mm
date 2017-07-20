@@ -44,7 +44,7 @@ static const char* const ERROR_MSG_FETCH =						"Failed to fetch ad";
 	GodotHeyzap::get_singleton()->emit_signal(SIGNAL_AD_FAILED, self.ad_type, ERROR_MSG_FETCH, [tag UTF8String]);
 }
 
-- (void)didSHowAdWithTag:(NSString *)tag {
+- (void)didShowAdWithTag:(NSString *)tag {
 	GodotHeyzap::get_singleton()->emit_signal(SIGNAL_AD_SHOW, self.ad_type, [tag UTF8String]);
 }
 
