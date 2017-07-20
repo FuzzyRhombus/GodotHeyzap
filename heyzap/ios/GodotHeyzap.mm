@@ -1,6 +1,8 @@
 #include "GodotHeyzap.h"
 #include "core/globals.h"
 #include "core/variant.h"
+#include "scene/main/scene_main_loop.h"
+#include "scene/main/viewport.h"
 
 #import "app_delegate.h"
 #import <HeyzapAds/HeyzapAds.h>
@@ -16,6 +18,14 @@ static const char* const SIGNAL_AD_FINISH =                     "ad_finished";
 
 static const char* const ERROR_MSG_SHOW =						"Failed to show ad";
 static const char* const ERROR_MSG_FETCH =						"Failed to fetch ad";
+
+void pause_tree(const bool pause) {
+	SceneTree *tree = SceneTree::get_singleton();
+	if (pause != tree->is_paused()) {
+		tree->set_pause(pause);
+		tree->get_root()->set_disable_input(pause);
+	}
+}
 
 @interface AdDelegate : NSObject <HZAdsDelegate>
 
@@ -46,6 +56,7 @@ static const char* const ERROR_MSG_FETCH =						"Failed to fetch ad";
 
 - (void)didShowAdWithTag:(NSString *)tag {
 	GodotHeyzap::get_singleton()->emit_signal(SIGNAL_AD_SHOW, self.ad_type, [tag UTF8String]);
+	if (self.ad_type > GodotHeyzap::AD_TYPE_BANNER) pause_tree(true);
 }
 
 - (void)didFailToShowAdWithTag:(NSString *)tag andError:(NSError *)error {
@@ -60,6 +71,7 @@ static const char* const ERROR_MSG_FETCH =						"Failed to fetch ad";
 	GodotHeyzap *singleton = GodotHeyzap::get_singleton();
 	singleton->emit_signal(SIGNAL_AD_HIDE, self.ad_type, [tag UTF8String]);
 	singleton->fetch_ad(self.ad_type);
+	pause_tree(false);
 }
 
 @end

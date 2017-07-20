@@ -54,6 +54,11 @@ func setup():
     GodotHeyzap = Globals.get_singleton(SINGLETON_BASE_NAME)
     set_process(false)
 
+func pause_tree(pause):
+    if pause != get_tree().is_paused():
+        get_tree().set_pause(pause)
+        get_tree().get_root().set_disable_input(pause)
+
 func _ready():
     if OS.get_name().to_lower() == 'android':
         set_process(true)
@@ -73,9 +78,11 @@ func _on_network_event(network, event):
 
 func _on_ad_show(type, tag):
     emit_signal('ad_shown', type, tag)
+    if type > AD_TYPE_BANNER: pause_tree(true)
 
 func _on_ad_hide(type, tag):
     emit_signal('ad_hidden', type, tag)
+    if type > AD_TYPE_BANNER: pause_tree(false)
 
 func _on_ad_click(type, tag):
     emit_signal('ad_clicked', type, tag)
