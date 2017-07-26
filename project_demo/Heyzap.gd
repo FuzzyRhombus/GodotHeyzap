@@ -2,7 +2,7 @@
 
 extends Node
 
-enum AdType { AD_TYPE_NONE, AD_TYPE_BANNER, AD_TYPE_INTERSTITIAL, AD_TYPE_VIDEO, AD_TYPE_REWARD_VIDEO }
+enum AdType { AD_TYPE_NONE, AD_TYPE_BANNER, AD_TYPE_INTERSTITIAL, AD_TYPE_VIDEO = 4, AD_TYPE_REWARD_VIDEO = 8}
 
 const SINGLETON_BASE_NAME = 'GodotHeyzap'
 
@@ -55,9 +55,8 @@ func setup():
     set_process(false)
 
 func pause_tree(pause):
-    if pause != get_tree().is_paused():
-        get_tree().set_pause(pause)
-        get_tree().get_root().set_disable_input(pause)
+    get_tree().set_pause(pause)
+    get_tree().get_root().set_disable_input(pause)
 
 func _ready():
     if OS.get_name().to_lower() == 'android':
@@ -90,7 +89,6 @@ func _on_ad_failed(type, message, tag):
     emit_signal('ad_failed', type, message, tag)
 
 func _on_ad_ready(type=0, tag=''):
-    print('ready ', type)
     emit_signal('ad_ready', type, tag)
 
 func _on_ad_skipped(type, tag):
